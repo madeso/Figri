@@ -1,0 +1,166 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{6CE7BA5D-2A65-42C0-BDC0-AB0ABA59727F}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SeriesNamer</RootNamespace>
+    <AssemblyName>SeriesNamer</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Ionic.Zip.Reduced, Version=1.7.2.20, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\DotNetZip-Reduced-v1.7\Ionic.Zip.Reduced.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AttributeTools.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AttributeTools.Designer.cs">
+      <DependentUpon>AttributeTools.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CSharp.cs" />
+    <Compile Include="ElementBuilder.cs" />
+    <Compile Include="FileUtil.cs" />
+    <Compile Include="MediaAction.cs" />
+    <Compile Include="MoveProgress.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MoveProgress.Designer.cs">
+      <DependentUpon>MoveProgress.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MoveTool.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MoveTool.Designer.cs">
+      <DependentUpon>MoveTool.cs</DependentUpon>
+    </Compile>
+    <Compile Include="StringPrompt.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="StringPrompt.Designer.cs">
+      <DependentUpon>StringPrompt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Strings.cs" />
+    <Compile Include="tvdb\Database.cs" />
+    <Compile Include="Extractor.cs" />
+    <Compile Include="Main.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Main.Designer.cs">
+      <DependentUpon>Main.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="AttributeTools.resx">
+      <DependentUpon>AttributeTools.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Main.resx">
+      <DependentUpon>Main.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MoveProgress.resx">
+      <DependentUpon>MoveProgress.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MoveTool.resx">
+      <DependentUpon>MoveTool.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FromFilename.resx">
+      <DependentUpon>FromFilename.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="StringPrompt.resx">
+      <DependentUpon>StringPrompt.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UpdateTool.resx">
+      <DependentUpon>UpdateTool.cs</DependentUpon>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="FromFilename.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FromFilename.Designer.cs">
+      <DependentUpon>FromFilename.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ShowInfo.cs" />
+    <Compile Include="ShowListUtil.cs" />
+    <Compile Include="StringSeperator.cs" />
+    <Compile Include="StringUtils.cs" />
+    <Compile Include="tvdb\Episode.cs" />
+    <Compile Include="tvdb\MirrorList.cs" />
+    <Compile Include="tvdb\Season.cs" />
+    <Compile Include="tvdb\Series.cs" />
+    <Compile Include="tvdb\YesNo.cs" />
+    <Compile Include="UnitTests.cs" />
+    <Compile Include="UpdateTool.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UpdateTool.Designer.cs">
+      <DependentUpon>UpdateTool.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Web.cs" />
+    <Compile Include="Xml.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
