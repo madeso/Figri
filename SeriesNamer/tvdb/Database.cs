@@ -98,7 +98,7 @@ namespace SeriesNamer.tvdb
                     }
                     series.add(season);
                 }
-                sDict.Add(ttl, series);
+                sDict[ttl] = series;
             }
         }
 
