@@ -15,6 +15,52 @@ namespace SeriesNamer
             this.path = path;
         }
 
+        // syntax sugar
+        public string Series
+        {
+            get
+            {
+                return this["series", ""];
+            }
+            set
+            {
+                this["series"] = value;
+            }
+        }
+        public string Season
+        {
+            get
+            {
+                return this["season", ""];
+            }
+            set
+            {
+                this["season"] = value;
+            }
+        }
+        public string Episode
+        {
+            get
+            {
+                return this["episode", ""];
+            }
+            set
+            {
+                this["episode"] = value;
+            }
+        }
+        public string Title
+        {
+            get
+            {
+                return this["title", ""];
+            }
+            set
+            {
+                this["title"] = value;
+            }
+        }
+
         public string FilePath
         {
             get

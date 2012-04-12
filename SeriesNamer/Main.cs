@@ -8,16 +8,18 @@ using System.Text;
 using System.Windows.Forms;
 using System.IO;
 using System.Xml;
+using BrightIdeasSoftware;
 
 namespace SeriesNamer
 {
     public partial class Main : Form
     {
-        ShowListUtil lu;
+        TypedObjectListView<ShowInfo> fileObjects;
+
         public Main()
         {
             InitializeComponent();
-            lu = new ShowListUtil(dFiles, new Dictionary<string, int>(), 60);
+            fileObjects = new TypedObjectListView<ShowInfo>(dFileObjects);
             loadSongs();
         }
 
@@ -37,7 +39,7 @@ namespace SeriesNamer
         {
             if (isMovieFile(file))
             {
-                lu.addSingle(new ShowInfo(file));
+                dFileObjects.AddObject(new ShowInfo(file));
             }
         }
 
@@ -70,29 +72,29 @@ namespace SeriesNamer
 
         private void tagToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            List<ShowInfo> infos = new List<ShowInfo>(lu.SelectedInfos);
+            List<ShowInfo> infos = new List<ShowInfo>(fileObjects.SelectedObjects);
             FromFilename st = new FromFilename(infos);
             if (st.ShowDialog() == DialogResult.OK)
             {
-                lu.updateAllText(lu.SelectedItems);
+                dFileObjects.RefreshObjects(dFileObjects.SelectedObjects);
                 saveSongs();
             }
         }
 
         private void lookUpInfoToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            UpdateTool st = new UpdateTool(lu.SelectedInfos);
+            UpdateTool st = new UpdateTool(fileObjects.SelectedObjects);
             st.ShowDialog();// == DialogResult.OK)
-            lu.updateAllText(lu.SelectedItems);
+            dFileObjects.RefreshObjects(dFileObjects.SelectedObjects);
             saveSongs();
         }
 
         private void attributeToolsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            AttributeTools st = new AttributeTools(lu.SelectedInfos);
+            AttributeTools st = new AttributeTools(fileObjects.SelectedObjects);
             if (st.ShowDialog() == DialogResult.OK)
             {
-                lu.updateAllText(lu.SelectedItems);
+                dFileObjects.RefreshObjects(dFileObjects.SelectedObjects);
                 saveSongs();
             }
         }
@@ -122,7 +124,7 @@ namespace SeriesNamer
                         s[Xml.GetAttributeString(a, "name")] = Xml.GetAttributeString(a, "value");
                     }
 
-                    lu.addSingle(s);
+                    dFileObjects.AddObject(s);
                 }
             }
             catch (Exception)
@@ -133,7 +135,7 @@ namespace SeriesNamer
         private void saveSongs()
         {
             ElementBuilder b = new ElementBuilder().child("media");
-            foreach (ShowInfo s in lu.AllInfos)
+            foreach (ShowInfo s in fileObjects.Objects)
             {
                 ElementBuilder c = b.child("show").attribute("path", s.FilePath);
                 foreach (KeyValuePair<string, string> a in s.Attributes)
@@ -147,15 +149,15 @@ namespace SeriesNamer
 
         private void moveFilesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MoveTool st = new MoveTool(lu.SelectedInfos);
+            MoveTool st = new MoveTool(fileObjects.SelectedObjects);
             st.ShowDialog();
-            lu.updateAllText(lu.SelectedItems);
+            dFileObjects.RefreshObjects(dFileObjects.SelectedObjects);
             saveSongs();
         }
 
         private void removeSelectedToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            lu.remove(lu.SelectedItems);
+            dFileObjects.RemoveObjects(dFileObjects.SelectedObjects);
         }
     }
 }
