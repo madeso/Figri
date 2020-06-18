@@ -50,6 +50,7 @@ namespace SeriesNamer
             else if (ext == ".divx") return true;
             else if (ext == ".mkv") return true;
             else if (ext == ".ogm") return true;
+            else if (ext == ".mp4") return true;
             else return false;
         }
 
