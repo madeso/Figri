@@ -1,8 +1,6 @@
-﻿using System;
+﻿using Figri;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
@@ -11,12 +9,12 @@ namespace SeriesNamer
 {
     public partial class AttributeTools : Form
     {
-        List<ShowInfo> infos;
+        List<FileEntry> infos;
 
-        public AttributeTools(IEnumerable<ShowInfo> infos)
+        public AttributeTools(IEnumerable<FileEntry> infos)
         {
             InitializeComponent();
-            this.infos = new List<ShowInfo>(infos);
+            this.infos = new List<FileEntry>(infos);
 
             updateView();
         }
@@ -24,7 +22,7 @@ namespace SeriesNamer
         private void updateView()
         {
             dAttributes.Items.Clear();
-            HashSet<string> attributes = ShowInfo.ExtractUsedAttributes(infos);
+            HashSet<string> attributes = FileEntry.ExtractUsedAttributes(infos);
             foreach (string s in attributes)
             {
                 ListViewItem it = new ListViewItem();
@@ -38,26 +36,26 @@ namespace SeriesNamer
 
         private string getSmartValueFor(string name)
         {
-            List<string> values = new List<string>(StringUtils.Unique(ShowInfo.AttributeFor(infos, name)));
-            
+            List<string> values = FileEntry.AttributeFor(infos, name).DistinctBy(x => x.ToLowerInvariant()).ToList();
+
             bool tooboig = (values.Count > kMax);
             StringSeperator sep = new StringSeperator(", ", tooboig ? ", " : " and ", "<empty>");
 
-            int count=0;
-            foreach(string v in values)
+            int count = 0;
+            foreach (string v in values)
             {
                 sep.Append(v);
-                if( count > kMax ) break;
+                if (count > kMax) break;
                 ++count;
             }
-            if( tooboig ) sep.Append("...");
+            if (tooboig) sep.Append("...");
 
             return sep.ToString();
         }
 
         private void capitalizeToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            apply( x => Capitalize(x) );
+            apply(x => Capitalize(x));
             updateItems();
         }
 
@@ -85,7 +83,7 @@ namespace SeriesNamer
             foreach (ListViewItem it in dAttributes.SelectedItems)
             {
                 string attributename = AttributeNameFor(it);
-                foreach (ShowInfo sh in infos)
+                foreach (FileEntry sh in infos)
                 {
                     string value = sh[attributename];
                     string newvalue = action(value);
@@ -141,7 +139,7 @@ namespace SeriesNamer
 
         private void setAttribute(string attributename, string newvalue)
         {
-            foreach (ShowInfo sh in infos)
+            foreach (FileEntry sh in infos)
             {
                 sh[attributename] = newvalue;
             }

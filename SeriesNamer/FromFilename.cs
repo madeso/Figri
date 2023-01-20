@@ -1,10 +1,6 @@
-﻿using System;
+﻿using Figri;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace SeriesNamer
@@ -13,7 +9,7 @@ namespace SeriesNamer
     {
         static Dictionary<string, int> widths = new Dictionary<string, int>();
         ShowListUtil lu;
-        public FromFilename(List<ShowInfo> infos)
+        public FromFilename(List<FileEntry> infos)
         {
             InitializeComponent();
 
@@ -35,7 +31,7 @@ namespace SeriesNamer
 
         private void applyPattern(string p)
         {
-            foreach (ShowInfo info in lu.AllInfos)
+            foreach (FileEntry info in lu.AllInfos)
             {
                 info.setupAttributes(p);
             }

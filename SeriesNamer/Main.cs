@@ -1,25 +1,22 @@
-﻿using System;
+﻿using BrightIdeasSoftware;
+using Figri;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
 using System.IO;
+using System.Linq;
+using System.Windows.Forms;
 using System.Xml;
-using BrightIdeasSoftware;
 
 namespace SeriesNamer
 {
     public partial class Main : Form
     {
-        TypedObjectListView<ShowInfo> fileObjects;
+        TypedObjectListView<FileEntry> fileObjects;
 
         public Main()
         {
             InitializeComponent();
-            fileObjects = new TypedObjectListView<ShowInfo>(dFileObjects);
+            fileObjects = new TypedObjectListView<FileEntry>(dFileObjects);
             loadSongs();
         }
 
@@ -39,7 +36,7 @@ namespace SeriesNamer
         {
             if (isMovieFile(file))
             {
-                dFileObjects.AddObject(new ShowInfo(file));
+                dFileObjects.AddObject(new FileEntry(file));
             }
         }
 
@@ -73,7 +70,7 @@ namespace SeriesNamer
 
         private void tagToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            List<ShowInfo> infos = new List<ShowInfo>(fileObjects.SelectedObjects);
+            List<FileEntry> infos = new List<FileEntry>(fileObjects.SelectedObjects);
             FromFilename st = new FromFilename(infos);
             if (st.ShowDialog() == DialogResult.OK)
             {
@@ -84,10 +81,6 @@ namespace SeriesNamer
 
         private void lookUpInfoToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            UpdateTool st = new UpdateTool(fileObjects.SelectedObjects);
-            st.ShowDialog();// == DialogResult.OK)
-            dFileObjects.RefreshObjects(dFileObjects.SelectedObjects);
-            saveSongs();
         }
 
         private void attributeToolsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -109,22 +102,16 @@ namespace SeriesNamer
 
         private string getShowPath()
         {
-            return Path.Combine(getShowDir(), "shows.xml");
+            return Path.Combine(getShowDir(), "shows.json");
         }
 
         private void loadSongs()
         {
             try
             {
-                XmlElement root = Xml.Open(Xml.FromFile(getShowPath()), "media");
-                foreach (XmlElement e in Xml.ElementsNamed(root, "show"))
+                var project = Project.Load(getShowPath());
+                foreach(var s in project.Files)
                 {
-                    ShowInfo s = new ShowInfo(Xml.GetAttributeString(e, "path"));
-                    foreach (XmlElement a in Xml.ElementsNamed(e, "attribute"))
-                    {
-                        s[Xml.GetAttributeString(a, "name")] = Xml.GetAttributeString(a, "value");
-                    }
-
                     dFileObjects.AddObject(s);
                 }
             }
@@ -135,17 +122,9 @@ namespace SeriesNamer
 
         private void saveSongs()
         {
-            ElementBuilder b = new ElementBuilder().child("media");
-            foreach (ShowInfo s in fileObjects.Objects)
-            {
-                ElementBuilder c = b.child("show").attribute("path", s.FilePath);
-                foreach (KeyValuePair<string, string> a in s.Attributes)
-                {
-                    c.child("attribute").attribute("name", a.Key).attribute("value", a.Value);
-                }
-            }
-            FileUtil.MakeSureDirectoryExist(getShowDir());
-            b.Document.Save(getShowPath());
+            new DirectoryInfo(getShowDir()).Create();
+            var project = new Project { Files = fileObjects.Objects.ToList() };
+            project.Save(getShowPath());
         }
 
         private void moveFilesToolStripMenuItem_Click(object sender, EventArgs e)

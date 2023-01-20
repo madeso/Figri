@@ -1,12 +1,9 @@
-﻿using System;
+﻿using Figri;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
 using System.IO;
+using System.Windows.Forms;
 
 namespace SeriesNamer
 {
@@ -20,7 +17,7 @@ namespace SeriesNamer
         public void start(IEnumerable<MediaAction> ma)
         {
             var m = new List<MediaAction>(ma);
-            dWorker.RunWorkerAsync(m); 
+            dWorker.RunWorkerAsync(m);
             ShowDialog();
         }
 
@@ -29,7 +26,7 @@ namespace SeriesNamer
             List<MediaAction> mas = (List<MediaAction>)e.Argument;
             int c = mas.Count;
 
-            for(int i=0; i<c; ++i)
+            for (int i = 0; i < c; ++i)
             {
                 MediaAction m = mas[i];
                 if (dWorker.CancellationPending)
@@ -44,7 +41,7 @@ namespace SeriesNamer
                 {
                     message = m.Source + " doesnt exist!";
                 }
-                else if (false==Path.IsPathRooted(m.Target))
+                else if (false == Path.IsPathRooted(m.Target))
                 {
                     message = m.Target + " is not rooted";
                 }
@@ -55,7 +52,7 @@ namespace SeriesNamer
                 else
                 {
                     DirectoryInfo dir = new FileInfo(m.Target).Directory;
-                    FileUtil.MakeSureDirectoryExist(dir);
+                    dir.Create();
                     int sub = moveExtra(m.Source, m.Target);
                     if (sub == -1)
                     {
@@ -64,11 +61,11 @@ namespace SeriesNamer
                     else
                     {
                         m.Show.moveTo(m.Target);
-                        message = m.Target + (sub==1 ? " (& SUB) " : "") + " DONE!";
+                        message = m.Target + (sub == 1 ? " (& SUB) " : "") + " DONE!";
                     }
                 }
 
-                dWorker.ReportProgress((int)(i+1/(float)c), message);
+                dWorker.ReportProgress((int)(i + 1 / (float)c), message);
             }
         }
 
@@ -96,8 +93,8 @@ namespace SeriesNamer
 
         private void dWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            dProgress.Value = Math.Min(100,e.ProgressPercentage);
-            dResult.AppendText( (string) e.UserState + Environment.NewLine );
+            dProgress.Value = Math.Min(100, e.ProgressPercentage);
+            dResult.AppendText((string)e.UserState + Environment.NewLine);
         }
     }
 }

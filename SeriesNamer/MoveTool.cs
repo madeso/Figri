@@ -1,23 +1,19 @@
-﻿using System;
+﻿using Figri;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
 using System.IO;
+using System.Windows.Forms;
 
 namespace SeriesNamer
 {
     public partial class MoveTool : Form
     {
-        List<ShowInfo> shows;
+        List<FileEntry> shows;
 
-        public MoveTool(IEnumerable<ShowInfo> shows)
+        public MoveTool(IEnumerable<FileEntry> shows)
         {
             InitializeComponent();
-            this.shows = new List<ShowInfo>(shows);
+            this.shows = new List<FileEntry>(shows);
             updatePreviewWindow();
         }
 
@@ -39,7 +35,7 @@ namespace SeriesNamer
 
                 // %series%\s%season%\%episode%-%title% 
 
-                foreach (ShowInfo s in shows)
+                foreach (FileEntry s in shows)
                 {
                     string ss = Safe(folder, patt
                         .Replace("%series%", s["series"])
